@@ -16,7 +16,7 @@ services:
       - cadvisor:cadvisor
     depends_on:
       - cadvisor
-      - app
+      - shorterurl
 
   cadvisor:
     image: google/cadvisor:v0.27.3
@@ -39,7 +39,7 @@ services:
     volumes:
       - ./data/grafana/:/var/lib/grafana
 
-  app:
+  shorterurl:
     build: .
     ports:
      - "8080:8080"
