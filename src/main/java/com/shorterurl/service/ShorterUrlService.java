@@ -35,10 +35,7 @@ public class ShorterUrlService {
 		validator.validate(url);
 		String id = generator.generate(url);
 		ShorterUrl shorterUrl = new ShorterUrl(id, url);
-		Optional<ShorterUrl> opt = repository.findById(id);
-		if (!opt.isPresent()) {
-			repository.save(shorterUrl);
-		}
+		repository.save(shorterUrl);
 		return shorterUrl.tinyUrl(localUrl);
 	}
 }
