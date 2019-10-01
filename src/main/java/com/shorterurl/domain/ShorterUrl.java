@@ -28,9 +28,6 @@ public class ShorterUrl implements Serializable {
 	@ApiModelProperty(notes = "URL expiration date", name = "expiredAt", required = true, example = "2020-10-20 18:45:12", position = 3)
 	private LocalDateTime expiredAt;
 	
-	public ShorterUrl() {
-	}
-	
 	public ShorterUrl(String id, String url) {
 		this.id = id;
 		this.url = url;
@@ -52,6 +49,10 @@ public class ShorterUrl implements Serializable {
 	
 	public LocalDateTime getExpiredAt() {
 		return expiredAt;
+	}
+	
+	public String tinyUrl(String localUrl) {
+		return localUrl.concat("/").concat(id);
 	}
 	
 	@Override
@@ -77,9 +78,5 @@ public class ShorterUrl implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	public String tinyUrl(String localUrl) {
-		return localUrl.concat("/").concat(id);
 	}
 }

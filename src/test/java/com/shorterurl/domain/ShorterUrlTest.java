@@ -1,80 +1,42 @@
 package com.shorterurl.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 public class ShorterUrlTest {
 
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
-	
 	@Test
-	public void testUrlNotEnteredWithSpaces() {
-		assertEquals(1L, 1L);
-	}
-	
-	/*@Test
-	public void testUrlNotEnteredWithSpaces() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL not entered");
-		ShorterUrl.validate("     ");
+	public void test_IdWasFilled() {
+		ShorterUrl shorterUrl = new ShorterUrl("50328aa4", "http://www.google.com.br");
+		assertEquals("50328aa4", shorterUrl.getId());
 	}
 	
 	@Test
-	public void testUrlNotEnteredWithNull() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL not entered");
-		ShorterUrl.validate(null);
+	public void test_UrlWasFilled() {
+		ShorterUrl shorterUrl = new ShorterUrl("50328aa4", "http://www.google.com.br");
+		assertEquals("http://www.google.com.br", shorterUrl.getUrl());
 	}
 	
 	@Test
-	public void testUrlDoesNotHasDomain() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-		ShorterUrl.validate("http://rer");
+	public void test_CreatedAtWasFilled() {
+		ShorterUrl shorterUrl = new ShorterUrl("50328aa4", "http://www.google.com.br");
+		assertNotNull(shorterUrl.getCreatedAt());
 	}
 	
 	@Test
-	public void testUrltHasUnacceptableCharacters() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-		ShorterUrl.validate("http://google$.com.^br");
+	public void test_ExpiredAtWasFilled() {
+		ShorterUrl shorterUrl = new ShorterUrl("50328aa4", "http://www.google.com.br");
+		assertNotNull(shorterUrl.getExpiredAt());
 	}
 	
 	@Test
-	public void testUrltHasUnacceptableFTPProtocol() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-		ShorterUrl.validate("ftp.uol.com.br");
+	public void test_TinyUrlMethod() {
+		ShorterUrl shorterUrl = new ShorterUrl("50328aa4", "http://www.google.com.br");
+		assertEquals("localhost:8080/url/50328aa4", shorterUrl.tinyUrl("localhost:8080/url"));
 	}
-	
-	@Test
-	public void testUrltHasUnacceptableHTTPProtocol() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-		ShorterUrl.validate("htto://www.uol.com");
-	}
-	
-	
-	//"https://www.google.com/search?hl=en&sugexp=les;&gs_nf=1&gs_mss=how%20do%20I%20iron%20a%20s&tok=POkeFnEdGVTAw_InGMW-Og&cp=21&gs_id=2j&xhr=t&q=how%20do%20I%20iron%20a%20shirt&pf=p&sclient=psy-ab&oq=how+do+I+iron+a+shirt&gs_l=&pbx=1&bav=on.2,or.r_gc.r_pw.r_cp.r_qf.&biw=1600&bih=775&cad=h"
-	
-	@Test
-	public void testIdGenerationForTheSameUrlIsUnique() {
-		ShorterUrl shUrl1 = new ShorterUrl("http://www.google.com.br");
-		ShorterUrl shUrl2 = new ShorterUrl("http://www.google.com.br");
-		assertEquals(shUrl1.getId(), shUrl2.getId());
-	}
-	
-	@Test
-	public void testIdGenerationForTDifferentUrlIsDifferent() {
-		ShorterUrl shUrl1 = new ShorterUrl("http://www.google.com.br");
-		ShorterUrl shUrl2 = new ShorterUrl("http://www.go0gle.com.br");
-		assertNotEquals(shUrl1.getId(), shUrl2.getId());
-	}*/
 }
