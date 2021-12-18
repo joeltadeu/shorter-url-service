@@ -7,10 +7,9 @@ import org.springframework.stereotype.Component;
 import com.google.common.hash.Hashing;
 
 @Component
-public class MurmurHash3IdGenerator implements IGenerator {
+public class HashIdGenerator  {
 
-	@Override
 	public String generate(String url) {
-		return Hashing.murmur3_32().hashString(url, StandardCharsets.UTF_8).toString();
+		return Hashing.adler32().hashString(url, StandardCharsets.UTF_8).toString();
 	}
 }

@@ -1,41 +1,39 @@
 package com.shorterurl.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import com.shorterurl.service.generation.HashIdGenerator;
+import com.shorterurl.service.generation.HashIdGeneratorTest;
+import com.shorterurl.service.validation.ShorterUrlValidator;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import com.shorterurl.domain.ShorterUrl;
 import com.shorterurl.repository.ShorterUrlRepository;
 import com.shorterurl.service.exception.ObjectNotFoundException;
-import com.shorterurl.service.generation.IGenerator;
-import com.shorterurl.service.validation.IValidator;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ShorterUrlServiceTest {
 
 	@Mock
 	ShorterUrlRepository repository;
 	
 	@Mock
-	IValidator validator;
+	ShorterUrlValidator validator;
 	
 	@Mock
-	IGenerator generator;
+	HashIdGenerator generator;
 	
 	@InjectMocks
 	ShorterUrlService service;
-	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
 	
 	@Test
 	public void test_saveUrlAndReturnShorterUrl() {
@@ -56,11 +54,17 @@ public class ShorterUrlServiceTest {
 	
 	@Test
 	public void test_ObjectNotFoundExceptionWhenIdIsWrong() {
-		exceptionRule.expect(ObjectNotFoundException.class);
-	    exceptionRule.expectMessage("URL not found for {id: 50328aa45}");
 		Optional<ShorterUrl> optional = Optional.empty();
 		when(repository.findById("50328aa45")).thenReturn(optional);
-		service.getOriginalURL("50328aa45");
+
+		Exception exception = assertThrows(ObjectNotFoundException.class, () -> {
+			service.getOriginalURL("50328aa45");
+		});
+
+		String expectedMessage = "URL not found for {id: 50328aa45}";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 		
 	}
 }

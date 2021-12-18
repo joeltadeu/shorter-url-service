@@ -1,11 +1,4 @@
-FROM java:8
-
-VOLUME /tmp
-
-ADD ./target/shorterurl-1.0.0-SNAPSHOT.jar shorterurl-1.0.0-SNAPSHOT.jar 
-
-RUN bash -c 'touch /shorterurl-1.0.0-SNAPSHOT.jar'
-
+FROM openjdk:16-alpine3.13
+ADD target/shorter-url-service.jar shorter-url-service.jar
 EXPOSE 8080
-
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/shorterurl-1.0.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/shorter-url-service.jar"]

@@ -1,68 +1,91 @@
 package com.shorterurl.service.validation;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.shorterurl.config.UrlValidatorConfig;
 import com.shorterurl.service.exception.ValidationErrorException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, 
-classes = { UrlValidatorConfig.class, ShorterUrlValidatorTest.class })
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ExtendWith(MockitoExtension.class)
 public class ShorterUrlValidatorTest {
 
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
-	
-	@Autowired
-	private IValidator validator;
-
+	@InjectMocks
+	private ShorterUrlValidator validator;
 
 	@Test
 	public void test_UrlNotEnteredWithSpaces() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL not entered");
-	    validator.validate("     ");
+
+		Exception exception = assertThrows(ValidationErrorException.class, () -> {
+			validator.validate("     ");
+		});
+
+		String expectedMessage = "URL not entered";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 	
 	@Test
 	public void test_UrlNotEnteredWithNull() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL not entered");
-	    validator.validate(null);
+		Exception exception = assertThrows(ValidationErrorException.class, () -> {
+			validator.validate(null);
+		});
+
+		String expectedMessage = "URL not entered";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 	
 	@Test
 	public void test_UrlDoesNotHasDomain() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-	    validator.validate("http://rer");
+		Exception exception = assertThrows(ValidationErrorException.class, () -> {
+			validator.validate("http://rer");
+		});
+
+		String expectedMessage = "URL is invalid";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 	
 	@Test
-	public void test_UrltHasUnacceptableCharacters() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-	    validator.validate("http://google$.com.^br");
+	public void test_UrlHasUnacceptableCharacters() {
+		Exception exception = assertThrows(ValidationErrorException.class, () -> {
+			validator.validate("http://google$.com.^br");
+		});
+
+		String expectedMessage = "URL is invalid";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 	
 	@Test
-	public void test_UrltHasUnacceptableFTPProtocol() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-	    validator.validate("ftp.uol.com.br");
+	public void test_UrlHasUnacceptableFTPProtocol() {
+		Exception exception = assertThrows(ValidationErrorException.class, () -> {
+			validator.validate("ftp.uol.com.br");
+		});
+
+		String expectedMessage = "URL is invalid";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 	
 	@Test
-	public void test_UrltHasUnacceptableHTTPProtocol() {
-		exceptionRule.expect(ValidationErrorException.class);
-	    exceptionRule.expectMessage("URL is invalid");
-	    validator.validate("htto://www.uol.com");
+	public void test_UrlHasUnacceptableHTTPProtocol() {
+		Exception exception = assertThrows(ValidationErrorException.class, () -> {
+			validator.validate("htto://www.uol.com");
+		});
+
+		String expectedMessage = "URL is invalid";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 }

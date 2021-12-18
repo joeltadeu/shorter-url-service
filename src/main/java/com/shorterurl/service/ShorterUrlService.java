@@ -2,24 +2,24 @@ package com.shorterurl.service;
 
 import java.util.Optional;
 
+import com.shorterurl.service.generation.HashIdGenerator;
+import com.shorterurl.service.validation.ShorterUrlValidator;
 import org.springframework.stereotype.Service;
 
 import com.shorterurl.domain.ShorterUrl;
 import com.shorterurl.repository.ShorterUrlRepository;
 import com.shorterurl.service.exception.ObjectNotFoundException;
-import com.shorterurl.service.generation.IGenerator;
-import com.shorterurl.service.validation.IValidator;
 
 @Service
 public class ShorterUrlService {
 
-	private final IValidator validator;
+	private final ShorterUrlValidator validator;
 	
-	private final IGenerator generator;
+	private final HashIdGenerator generator;
 	
 	private final ShorterUrlRepository repository;
 
-	public ShorterUrlService(ShorterUrlRepository repository, IValidator validator, IGenerator generator) {
+	public ShorterUrlService(ShorterUrlRepository repository, ShorterUrlValidator validator, HashIdGenerator generator) {
 		this.repository = repository;
 		this.validator = validator;
 		this.generator = generator;

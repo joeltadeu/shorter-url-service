@@ -1,4 +1,4 @@
-package com.shorterurl.resource;
+package com.shorterurl.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,13 +21,13 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/url")
 @RestController
 @Api(value = "ShorterUrl")
-public class ShorterUrlResource {
+public class ShorterUrlController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ShorterUrlResource.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShorterUrlController.class);
 
 	private final ShorterUrlService service;
 
-	public ShorterUrlResource(ShorterUrlService service) {
+	public ShorterUrlController(ShorterUrlService service) {
 		this.service = service;
 	}
 	

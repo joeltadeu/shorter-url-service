@@ -6,19 +6,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.8.RELEASE</version>
+		<version>2.5.7</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shorterurl</groupId>
 	<artifactId>shorterurl</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>shorterurl</name>
+	<name>shorter-url</name>
 	<description>Shorter URL Service</description>
 
 	<properties>
-		<java.version>1.8</java.version>
-		<commons-validator.version>1.6</commons-validator.version>
-		<guava.version>28.1-jre</guava.version>
+		<java.version>16</java.version>
+		<commons-validator.version>1.7</commons-validator.version>
+		<guava.version>31.0.1-jre</guava.version>
 		<swagger.version>2.9.2</swagger.version>
 	</properties>
 
@@ -73,6 +73,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>shorter-url-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

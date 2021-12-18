@@ -7,15 +7,14 @@ import org.springframework.util.StringUtils;
 import com.shorterurl.service.exception.ValidationErrorException;
 
 @Component
-public class ShorterUrlValidator implements IValidator {
+public class ShorterUrlValidator {
 
 	private final UrlValidator urlValidator;
 
-	public ShorterUrlValidator(UrlValidator urlValidator) {
-		this.urlValidator = urlValidator;
+	public ShorterUrlValidator() {
+		this.urlValidator = new UrlValidator();
 	}
 
-	@Override
 	public void validate(String url) {
 		if (!StringUtils.hasText(url))
 			throw new ValidationErrorException("URL not entered");
