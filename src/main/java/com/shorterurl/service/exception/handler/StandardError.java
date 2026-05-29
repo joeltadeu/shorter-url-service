@@ -1,13 +1,15 @@
 package com.shorterurl.service.exception.handler;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class StandardError implements Serializable {
 
-	private static final long serialVersionUID = 2034300392942878889L;
+	@Serial
+    private static final long serialVersionUID = 2034300392942878889L;
 
 	private Integer status;
 	private String msg;

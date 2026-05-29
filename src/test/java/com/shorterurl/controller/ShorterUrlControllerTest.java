@@ -6,29 +6,33 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.shorterurl.Application;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.shorterurl.service.ShorterUrlService;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest({ShorterUrlController.class})
-@ContextConfiguration(classes = { Application.class })
+@ExtendWith(MockitoExtension.class)
 public class ShorterUrlControllerTest {
 
-	@Autowired
+	@Mock
+	private ShorterUrlService service;
+
+	@InjectMocks
+	private ShorterUrlController controller;
+
 	private MockMvc mockMvc;
 
-	@MockBean
-	private ShorterUrlService service;
+	@BeforeEach
+	public void setup() {
+		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+	}
 
 	@Test
 	public void test_RedirectUrlEndpointFromService() throws Exception {
@@ -38,10 +42,12 @@ public class ShorterUrlControllerTest {
 
 	@Test
 	public void test_ShorterUrlEndpointFromService() throws Exception {
-		when(service.shorterUrl("localhost:8080/url", "http://www.google.com.br"))
-				.thenReturn("localhost:8080/url/50328aa4");
-		this.mockMvc.perform(post("/url").contentType(MediaType.APPLICATION_JSON).content("http://www.google.com.br")
-				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-
+		when(service.shorterUrl("http://localhost/url", "http://www.google.com.br"))
+				.thenReturn("http://localhost/url/50328aa4");
+		this.mockMvc.perform(post("/url")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("http://www.google.com.br")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 }

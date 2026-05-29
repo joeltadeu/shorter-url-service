@@ -1,10 +1,8 @@
 package com.shorterurl.service.generation;
 
-import java.nio.charset.StandardCharsets;
-
-import org.springframework.stereotype.Component;
-
 import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
+import org.springframework.stereotype.Component;
 
 @Component
 public class HashIdGenerator  {

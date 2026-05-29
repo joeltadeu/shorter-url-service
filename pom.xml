@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.7</version>
+		<version>4.0.6</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shorterurl</groupId>
@@ -16,10 +16,12 @@
 	<description>Shorter URL Service</description>
 
 	<properties>
-		<java.version>16</java.version>
-		<commons-validator.version>1.7</commons-validator.version>
-		<guava.version>31.0.1-jre</guava.version>
-		<swagger.version>2.9.2</swagger.version>
+		<java.version>25</java.version>
+		<commons-validator.version>1.10.1</commons-validator.version>
+		<guava.version>33.6.0-jre</guava.version>
+		<springdoc-openapi.version>3.0.1</springdoc-openapi.version>
+		<logstash-logback-encoder.version>9.0</logstash-logback-encoder.version>
+		<loki-logback-appender.version>1.5.2</loki-logback-appender.version>
 	</properties>
 
 	<dependencies>
@@ -51,19 +53,24 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
+			<groupId>com.github.loki4j</groupId>
+			<artifactId>loki-logback-appender</artifactId>
+			<version>${loki-logback-appender.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-scalar</artifactId>
+			<version>${springdoc-openapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

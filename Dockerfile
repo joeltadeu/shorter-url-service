@@ -1,4 +1,7 @@
-FROM openjdk:16-alpine3.13
-ADD target/shorter-url-service.jar shorter-url-service.jar
+FROM gcr.io/distroless/java25-debian13
+
+ADD target/shorter-url-service.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/shorter-url-service.jar"]
+
+ENTRYPOINT ["java", "-jar", "/app.jar"]

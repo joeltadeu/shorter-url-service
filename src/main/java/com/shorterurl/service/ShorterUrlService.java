@@ -1,14 +1,12 @@
 package com.shorterurl.service;
 
-import java.util.Optional;
-
-import com.shorterurl.service.generation.HashIdGenerator;
-import com.shorterurl.service.validation.ShorterUrlValidator;
-import org.springframework.stereotype.Service;
-
 import com.shorterurl.domain.ShorterUrl;
 import com.shorterurl.repository.ShorterUrlRepository;
 import com.shorterurl.service.exception.ObjectNotFoundException;
+import com.shorterurl.service.generation.HashIdGenerator;
+import com.shorterurl.service.validation.ShorterUrlValidator;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ShorterUrlService {

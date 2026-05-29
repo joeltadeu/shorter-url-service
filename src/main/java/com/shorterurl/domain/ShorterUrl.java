@@ -1,31 +1,28 @@
 package com.shorterurl.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 @RedisHash("ShorterUrl")
-@ApiModel(description = "Represents data from URL registered in database with a generated short ID")
+@Schema(description = "Represents data from URL registered in database with a generated short ID")
 public class ShorterUrl implements Serializable {
 
 	private static final long serialVersionUID = -6572972326868097075L;
 
 	@Id
-	@ApiModelProperty(notes = "Id of the short URL", name = "id", required = true, example = "7uHb82q", position = 0)
+	@Schema(description = "Id of the short URL", example = "7uHb82q", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String id;
-	
-	@ApiModelProperty(notes = "Original URL", name = "url", required = true, example = "https://www.google.com", position = 1)
+
+	@Schema(description = "Original URL", example = "https://www.google.com", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String url;
-	
-	@ApiModelProperty(notes = "URL creation date", name = "createdAt", required = true, example = "2019-10-20 18:45:12", position = 2)
+
+	@Schema(description = "URL creation date", example = "2019-10-20 18:45:12", requiredMode = Schema.RequiredMode.REQUIRED)
 	private LocalDateTime createdAt;
-	
-	@ApiModelProperty(notes = "URL expiration date", name = "expiredAt", required = true, example = "2020-10-20 18:45:12", position = 3)
+
+	@Schema(description = "URL expiration date", example = "2020-10-20 18:45:12", requiredMode = Schema.RequiredMode.REQUIRED)
 	private LocalDateTime expiredAt;
 	
 	public ShorterUrl(String id, String url) {

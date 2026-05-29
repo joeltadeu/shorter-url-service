@@ -1,10 +1,9 @@
 package com.shorterurl.service.validation;
 
+import com.shorterurl.service.exception.ValidationErrorException;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import com.shorterurl.service.exception.ValidationErrorException;
 
 @Component
 public class ShorterUrlValidator {

@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 import com.shorterurl.domain.ShorterUrl;
 
 @Repository
-public interface ShorterUrlRepository extends CrudRepository<ShorterUrl, String>{
-
-}
+public interface ShorterUrlRepository extends CrudRepository<ShorterUrl, String> {}

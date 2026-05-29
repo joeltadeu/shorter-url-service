@@ -1,17 +1,14 @@
 package com.shorterurl.config;
 
-import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import io.micrometer.core.instrument.MeterRegistry;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MonitoringConfig {
 
-	@Bean
-	MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
-	  return registry -> registry.config().commonTags("application", "shorterurl");
-	}
+  @Autowired
+  public void configureRegistry(MeterRegistry registry) {
+    registry.config().commonTags("application", "shorterurl");
+  }
 }

@@ -1,7 +1,9 @@
 package com.shorterurl.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.shorterurl.service.ShorterUrlService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.shorterurl.service.ShorterUrlService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 @RequestMapping("/url")
 @RestController
-@Api(value = "ShorterUrl")
+@Tag(name = "ShorterUrl")
 public class ShorterUrlController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShorterUrlController.class);
@@ -32,7 +29,7 @@ public class ShorterUrlController {
 	}
 	
 	@GetMapping("/{id}")
-	@ApiOperation(value = "Service that redirects the user to the original url from a short url.")
+	@Operation(summary = "Service that redirects the user to the original url from a short url.")
 	public RedirectView redirect(@PathVariable String id) {
 		LOGGER.info(String.format("Shortened url to redirect: %s", id));
 		String originalUrl = service.getOriginalURL(id);
@@ -43,7 +40,7 @@ public class ShorterUrlController {
 	}
 
 	@PostMapping
-	@ApiOperation(value = "Service that registers and generates a short URL for the user.")
+	@Operation(summary = "Service that registers and generates a short URL for the user.")
 	public ResponseEntity<String> shorter(@RequestBody String url, HttpServletRequest request) {
 		LOGGER.info(String.format("Received url to shorten: %s", url));
 		String localURL = request.getRequestURL().toString();
