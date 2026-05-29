@@ -6,12 +6,15 @@ services:
     build: .
     ports:
       - "8081:8081"
-    links:
-      - "db:redis"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - db
+      - loki
     networks:
       - shorterurl-network
 
-  # ── Database ───────────────────────────────────────────────────────────
+  # ── Database ────────────────────────────────────────────────────────────────
 
   db:
     image: "redis:alpine"
@@ -21,7 +24,19 @@ services:
     networks:
       - shorterurl-network
 
-  # ── Observability ───────────────────────────────────────────────────────────
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: redis-exporter
+    ports:
+      - "9121:9121"
+    environment:
+      - REDIS_ADDR=redis://redis:6379
+    depends_on:
+      - db
+    networks:
+      - shorterurl-network
+
+  # ── Observability ────────────────────────────────────────────────────────────
 
   prometheus:
     image: prom/prometheus:latest
@@ -31,7 +46,7 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - shorterurl-network
 
@@ -51,7 +66,7 @@ services:
       - /dev/disk/:/dev/disk:ro
     restart: unless-stopped
     expose:
-      - 8090
+      - 8080
     networks:
       - shorterurl-network
 
@@ -65,10 +80,11 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./observability/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ./observability/grafana/provisioning/:/etc/grafana/provisioning/
     depends_on:
       - prometheus
-      - zipkin
+      - loki
     networks:
       - shorterurl-network
 

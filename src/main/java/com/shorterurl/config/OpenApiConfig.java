@@ -32,7 +32,7 @@ public class OpenApiConfig {
         .servers(
             List.of(
                 new io.swagger.v3.oas.models.servers.Server()
-                    .url("http://localhost:8083")
+                    .url("http://localhost:8081")
                     .description("Local Development Server")));
   }
 }

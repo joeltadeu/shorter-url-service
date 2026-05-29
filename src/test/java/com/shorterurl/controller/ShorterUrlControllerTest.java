@@ -4,8 +4,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.shorterurl.domain.ShorterUrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,17 +40,25 @@ public class ShorterUrlControllerTest {
 	@Test
 	public void test_RedirectUrlEndpointFromService() throws Exception {
 		when(service.getOriginalURL("50328aa4")).thenReturn("http://www.google.com.br");
-		this.mockMvc.perform(get("/url/50328aa4")).andDo(print()).andExpect(status().is3xxRedirection());
+		this.mockMvc.perform(get("/urls/50328aa4"))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection());
 	}
 
 	@Test
 	public void test_ShorterUrlEndpointFromService() throws Exception {
-		when(service.shorterUrl("http://localhost/url", "http://www.google.com.br"))
-				.thenReturn("http://localhost/url/50328aa4");
-		this.mockMvc.perform(post("/url")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("http://www.google.com.br")
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		ShorterUrl shorterUrl = new ShorterUrl("50328aa4", "http://www.google.com.br");
+		when(service.shorterUrl("http://www.google.com.br")).thenReturn(shorterUrl);
+
+		this.mockMvc.perform(post("/urls")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("{\"url\": \"http://www.google.com.br\"}")
+						.accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location", "http://localhost/urls/50328aa4"))
+				.andExpect(jsonPath("$.id").value("50328aa4"))
+				.andExpect(jsonPath("$.originalUrl").value("http://www.google.com.br"))
+				.andExpect(jsonPath("$.shortenedUrl").value("http://localhost/urls/50328aa4"));
 	}
 }

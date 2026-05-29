@@ -1,0 +1,49 @@
+@startuml Shorter URL Service - Architecture
+
+skinparam componentStyle rectangle
+skinparam backgroundColor #FAFAFA
+skinparam component {
+    BackgroundColor #D6EAF8
+    BorderColor #2E86C1
+    FontColor #1B2631
+}
+skinparam database {
+    BackgroundColor #D5F5E3
+    BorderColor #1E8449
+}
+skinparam package {
+    BackgroundColor #FDFEFE
+    BorderColor #AAB7B8
+}
+
+actor "Client" as client
+
+package "Shorter URL Service  :8081" {
+    component "ShorterUrlController\n/urls" as controller
+    component "ShorterUrlService" as service
+    component "HashIdGenerator\n(Guava · Adler32)" as generator
+    component "ShorterUrlRepository" as repository
+}
+
+database "Redis  :6379" as redis
+
+package "Observability" {
+    component "Prometheus  :9090" as prometheus
+    component "Grafana  :3000" as grafana
+    component "Loki  :3100" as loki
+    component "cAdvisor  :8080" as cadvisor
+}
+
+client -right-> controller : POST /urls\nGET /urls/{id}
+
+controller --> service
+service --> generator : generate(url)
+service --> repository : save / findById
+repository --> redis : CRUD
+
+controller --> prometheus : /actuator/prometheus
+cadvisor --> prometheus : container metrics
+prometheus --> grafana : query metrics
+loki --> grafana : query logs
+
+@enduml
